@@ -10,10 +10,10 @@ public interface IRepository<T> where T : class, IEntity
     Task<T?> GetAsync(Guid id, CancellationToken cancellationToken);
     Task<Guid> CreateAsync(T entity, CancellationToken cancellationToken);
     Task<List<Guid>> CreateRangeAsync(List<T> entities, CancellationToken cancellationToken);
-    Task<T> Update(T entity);    
+    Task<T> UpdateAsync(T entity, CancellationToken cancellationToken);    
     Task<List<T>> UpdateRangeAsync(List<T> entities, CancellationToken cancellationToken);
 
-    Task<T> Delete(Guid id);
+    Task<T?> DeleteAsync(Guid id, CancellationToken cancellationToken);
 }
 
 public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
@@ -39,16 +39,16 @@ public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
         return entities.Select(x => x.Id).ToList();
     }
 
-    public async Task<TEntity> Delete(Guid id)
+    public async Task<TEntity?> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await context.Set<TEntity>().FindAsync(id);
+        var entity = await context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (entity == null)
         {
             return entity;
         }
 
         context.Set<TEntity>().Remove(entity);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
 
         return entity;
     }
@@ -63,10 +63,10 @@ public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
         return await context.Set<TEntity>().ToListAsync();
     }
 
-    public async Task<TEntity> Update(TEntity entity)
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)   
     {
         context.Entry(entity).State = EntityState.Modified;
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
         return entity;
     }
 

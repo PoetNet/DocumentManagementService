@@ -6,37 +6,33 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services;
 
-public interface IDocumentService
+public interface IDocumentsService
 {
     Task<ActionResult> GetAsync(Guid id, CancellationToken cancellationToken);
     Task<ActionResult> CreateAsync(CreateDocumentDto createDto, CancellationToken cancellationToken);
 }
 
-public class DocumentService(
+public class DocumentsService(
     DocumentsRepository documentRepository,
     TaskItemsRepository taskItemsRepository)
-    : IDocumentService
+    : IDocumentsService
 {
     public async Task<ActionResult> CreateAsync(CreateDocumentDto createDto, CancellationToken cancellationToken)
     {
-        var activeTasks = createDto.Tasks
-            .Where(x => x.Status == Status.InProgress)
-            .ToList();
-
-        if (activeTasks.Count > 1)
-        {
-            return new BadRequestObjectResult("We can only have a task for a document in the same time");
-        }
-
-
         List<TaskItem> tasks = createDto.Tasks
             .Select(x => new TaskItem(x.Name) {Status = x.Status})
             .ToList();
 
-        Document newDocument = new()
+        var activeTasks = tasks
+            .Where(x => x.Status == Status.InProgress)
+            .ToList();
+
+        if (activeTasks.Count > 1 || activeTasks.Count < 1)
         {
-            Status = activeTasks.Count == 1 ? Status.InProgress : Status.Backlog,
-        };
+            return new BadRequestObjectResult("We must have only an active task for a document in the same time");
+        }
+
+        Document newDocument = new();
 
         Guid documentId = await documentRepository.CreateAsync(newDocument, cancellationToken);
 

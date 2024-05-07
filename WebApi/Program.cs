@@ -31,7 +31,8 @@ public class Program
         builder.Services.AddScoped<DocumentsRepository>();
         builder.Services.AddScoped<TaskItemsRepository>();
 
-        builder.Services.AddScoped<IDocumentService, DocumentService>();
+        builder.Services.AddScoped<IDocumentsService, DocumentsService>();
+        builder.Services.AddScoped<ITaskItemsService, TaskItemsService>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

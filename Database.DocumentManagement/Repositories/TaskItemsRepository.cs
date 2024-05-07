@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Reflection.Metadata;
 
 namespace Database.DocumentManagement.Repositories;
@@ -14,10 +15,17 @@ public class TaskItemsRepository : BaseRepository<TaskItem, DocumentManagementDb
         _context = context;
     }
 
-    public async Task<TaskItem?> GetActiveByDocumentIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<TaskItem?> GetNewActiveByDocumentIdAsync(Guid previousTaskId, Guid documentId, CancellationToken cancellationToken)
     {
         return await _context.Set<TaskItem>()
-            .Where(x => x.Status == Status.InProgress && x.Document.Id == id)
+            .Where(x => x.PreviousTaskId == previousTaskId && x.Document.Id == documentId)
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public new async Task<TaskItem?> GetAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _context.Set<TaskItem>()
+            .Include(x => x.Document)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }

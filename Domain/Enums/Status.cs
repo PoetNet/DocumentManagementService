@@ -3,6 +3,6 @@ public enum Status
 {
     Backlog,
     InProgress,
-    Hold,
-    Completed
+    InOperationalArchive,
+    Canceled
 }
