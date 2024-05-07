@@ -3,6 +3,8 @@ using Database.DocumentManagement.Repositories;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 
+using Application.Services;
+
 namespace WebApi;
 
 public class Program
@@ -25,8 +27,11 @@ public class Program
         builder.Services.AddDbContext<DocumentManagementDbContext>(options =>
             options.UseNpgsql(connection)
         );
+
         builder.Services.AddScoped<DocumentsRepository>();
         builder.Services.AddScoped<TaskItemsRepository>();
+
+        builder.Services.AddScoped<IDocumentService, DocumentService>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

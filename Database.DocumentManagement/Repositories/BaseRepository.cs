@@ -1,8 +1,20 @@
 ﻿using Domain.Entities;
-using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Database.DocumentManagement.Repositories;
+
+public interface IRepository<T> where T : class, IEntity
+{
+    Task<List<T>> GetAll();
+    Task<T?> GetAsync(Guid id, CancellationToken cancellationToken);
+    Task<Guid> CreateAsync(T entity, CancellationToken cancellationToken);
+    Task<List<Guid>> CreateRangeAsync(List<T> entities, CancellationToken cancellationToken);
+    Task<T> Update(T entity);    
+    Task<List<T>> UpdateRangeAsync(List<T> entities, CancellationToken cancellationToken);
+
+    Task<T> Delete(Guid id);
+}
 
 public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
     where TEntity : class, IEntity
@@ -13,14 +25,21 @@ public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
     {
         this.context = context;
     }
-    public async Task<TEntity> Add(TEntity entity)
+    public async Task<Guid> CreateAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        context.Set<TEntity>().Add(entity);
-        await context.SaveChangesAsync();
-        return entity;
+        await context.Set<TEntity>().AddAsync(entity, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
+    }    
+    
+    public async Task<List<Guid>> CreateRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
+    {
+        await context.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+        return entities.Select(x => x.Id).ToList();
     }
 
-    public async Task<TEntity> Delete(int id)
+    public async Task<TEntity> Delete(Guid id)
     {
         var entity = await context.Set<TEntity>().FindAsync(id);
         if (entity == null)
@@ -34,9 +53,9 @@ public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
         return entity;
     }
 
-    public async Task<TEntity> Get(int id)
+    public async Task<TEntity?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await context.Set<TEntity>().FindAsync(id);
+        return await context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<List<TEntity>> GetAll()
@@ -51,4 +70,14 @@ public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
         return entity;
     }
 
+    public async Task<List<TEntity>> UpdateRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
+    {
+        foreach (var entity in entities)
+        {
+            context.Entry(entity).State = EntityState.Modified;
+        }
+
+        await context.SaveChangesAsync(cancellationToken);
+        return entities;
+    }
 }
