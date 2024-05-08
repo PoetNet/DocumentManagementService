@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Database.DocumentManagement.Repositories;
 
@@ -10,7 +9,7 @@ public interface IRepository<T> where T : class, IEntity
     Task<T?> GetAsync(Guid id, CancellationToken cancellationToken);
     Task<Guid> CreateAsync(T entity, CancellationToken cancellationToken);
     Task<List<Guid>> CreateRangeAsync(List<T> entities, CancellationToken cancellationToken);
-    Task<T> UpdateAsync(T entity, CancellationToken cancellationToken);    
+    Task<T> UpdateAsync(T entity, CancellationToken cancellationToken);
     Task<List<T>> UpdateRangeAsync(List<T> entities, CancellationToken cancellationToken);
 
     Task<T?> DeleteAsync(Guid id, CancellationToken cancellationToken);
@@ -30,8 +29,8 @@ public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
         await context.Set<TEntity>().AddAsync(entity, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
         return entity.Id;
-    }    
-    
+    }
+
     public async Task<List<Guid>> CreateRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
     {
         await context.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
@@ -63,7 +62,7 @@ public abstract class BaseRepository<TEntity, TContext> : IRepository<TEntity>
         return await context.Set<TEntity>().ToListAsync();
     }
 
-    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)   
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         context.Entry(entity).State = EntityState.Modified;
         await context.SaveChangesAsync(cancellationToken);

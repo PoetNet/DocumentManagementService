@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Domain.Dtos.TaskItems;
+﻿using Domain.Dtos.TaskItems;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Dtos.Documents;
 

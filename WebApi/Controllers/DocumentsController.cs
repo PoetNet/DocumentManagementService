@@ -12,8 +12,8 @@ public class DocumentsController(IDocumentsService documentsService)
     public async Task<ActionResult> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         return await documentsService.GetAsync(id, cancellationToken);
-    }    
-    
+    }
+
     [HttpPost]
     public async Task<ActionResult> PostAsync(CreateDocumentDto createDto, CancellationToken cancellationToken)
     {

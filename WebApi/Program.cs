@@ -1,9 +1,11 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Application.Services;
 using Database.DocumentManagement;
 using Database.DocumentManagement.Repositories;
+using Domain.Enums;
 using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
-
-using Application.Services;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace WebApi;
 
@@ -16,17 +18,20 @@ public class Program
 
         var builder = WebApplication.CreateBuilder(args);
 
-        string connection =
-            $"""
-                 Host={env["DB_HOST"]};
-                 Port={env["DB_PORT"]};
-                 Database={env["DB_DATABASE"]};
-                 Username={env["DB_USERNAME"]};
-                 Password={env["DB_PASSWORD"]};
-             """;
-        builder.Services.AddDbContext<DocumentManagementDbContext>(options =>
-            options.UseNpgsql(connection)
-        );
+        //If we need to use Postgres:
+        //string connection =
+        //    $"""
+        //         Host={env["DB_HOST"]};
+        //         Port={env["DB_PORT"]};
+        //         Database={env["DB_DATABASE"]};
+        //         Username={env["DB_USERNAME"]};
+        //         Password={env["DB_PASSWORD"]};
+        //     """;
+        //builder.Services.AddDbContext<DocumentManagementDbContext>(options =>
+        //    options.UseNpgsql(connection)
+        //);
+
+        builder.Services.AddDbContext<DocumentManagementDbContext>();
 
         builder.Services.AddScoped<DocumentsRepository>();
         builder.Services.AddScoped<TaskItemsRepository>();
@@ -34,7 +39,14 @@ public class Program
         builder.Services.AddScoped<IDocumentsService, DocumentsService>();
         builder.Services.AddScoped<ITaskItemsService, TaskItemsService>();
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                }
+            );
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 

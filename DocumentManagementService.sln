@@ -7,14 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.DocumentManagement", "Database.DocumentManagement\Database.DocumentManagement.csproj", "{12890C5B-6FBC-4032-AB5C-D571E31C09D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{7BF1D6F5-5808-4DF1-AD47-986E081B376A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{7BF1D6F5-5808-4DF1-AD47-986E081B376A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6E4DC45D-D8E7-4E3F-9B54-171A8F807BF7}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{56C30BF7-1106-4A64-9041-2943B2A3E648}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{56C30BF7-1106-4A64-9041-2943B2A3E648}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.DocumentManagement.Migrations", "Database.DocumentManagement.Migrations\Database.DocumentManagement.Migrations.csproj", "{09471475-308E-4952-9C77-D8C01BA7CB92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{56C30BF7-1106-4A64-9041-2943B2A3E648}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56C30BF7-1106-4A64-9041-2943B2A3E648}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56C30BF7-1106-4A64-9041-2943B2A3E648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09471475-308E-4952-9C77-D8C01BA7CB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09471475-308E-4952-9C77-D8C01BA7CB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09471475-308E-4952-9C77-D8C01BA7CB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09471475-308E-4952-9C77-D8C01BA7CB92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

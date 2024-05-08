@@ -20,7 +20,7 @@ public class DocumentsService(
     public async Task<ActionResult> CreateAsync(CreateDocumentDto createDto, CancellationToken cancellationToken)
     {
         List<TaskItem> tasks = createDto.Tasks
-            .Select(x => new TaskItem(x.Name) {Status = x.Status})
+            .Select(x => new TaskItem(x.Name) { Status = x.Status })
             .ToList();
 
         var activeTasks = tasks

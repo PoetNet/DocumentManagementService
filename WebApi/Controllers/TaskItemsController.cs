@@ -1,5 +1,4 @@
 using Application.Services;
-using Domain.Dtos.Documents;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -12,8 +11,8 @@ public class TaskItemsController(ITaskItemsService taskItemsService)
     public async Task<ActionResult> ExecuteAsync(Guid id, CancellationToken cancellationToken)
     {
         return await taskItemsService.ExecuteAsync(id, cancellationToken); ;
-    }    
-    
+    }
+
     [HttpPatch("{id:guid}/cancel")]
     public async Task<ActionResult> CancelAsync(Guid id, CancellationToken cancellationToken)
     {

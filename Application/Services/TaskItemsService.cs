@@ -2,7 +2,6 @@
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata;
 
 namespace Application.Services;
 
@@ -46,8 +45,8 @@ public class TaskItemsService(
         await documentRepository.UpdateAsync(document, cancellationToken);
 
         return new OkObjectResult($"Task with id '{id}' is executed");
-    }    
-    
+    }
+
     public async Task<ActionResult> CancelAsync(Guid id, CancellationToken cancellationToken)
     {
         var taskItem = await taskItemsRepository.GetAsync(id, cancellationToken);

@@ -8,5 +8,5 @@ public record GetTaskItemDto
     public string Name { get; set; }
 
     public Status Status { get; set; }
-    public Guid? PreviousTaskId  { get; set; }
+    public Guid? PreviousTaskId { get; set; }
 }
