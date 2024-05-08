@@ -1,11 +1,8 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Application.Services;
 using Database.DocumentManagement;
 using Database.DocumentManagement.Repositories;
-using Domain.Enums;
 using DotNetEnv;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json.Serialization;
 
 namespace WebApi;
 

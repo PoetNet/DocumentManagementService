@@ -21,7 +21,7 @@ public class DocumentManagementDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlite(@"Data Source=..\DocumentManagementDb.db", 
+        options.UseSqlite(@"Data Source=..\DocumentManagementDb.db",
             b => b.MigrationsAssembly("Database.DocumentManagement.Migrations"));
     }
 }

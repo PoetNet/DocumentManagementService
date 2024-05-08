@@ -19,6 +19,13 @@ public class TaskItemsRepository : BaseRepository<TaskItem, DocumentManagementDb
             .FirstOrDefaultAsync(cancellationToken);
     }
 
+    public async Task DeleteByDocumentIdAsync(Guid documentId, CancellationToken cancellationToken)
+    {
+        _context.Set<TaskItem>().RemoveRange(
+            _context.Set<TaskItem>().Where(x => x.Document.Id == documentId));
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
     public new async Task<TaskItem?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _context.Set<TaskItem>()
